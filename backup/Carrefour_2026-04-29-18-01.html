@@ -1,0 +1,843 @@
+
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ofertas Carrefour</title>
+        <style>
+            :root { --primary: #003087; --bg: #f3f4f6; }
+            body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+            .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 20px; }
+            
+            /* Controles de Filtro */
+            .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+            .controls select { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; flex: 1; min-width: 200px; max-width: 300px; outline: none; background: white; cursor: pointer; }
+            
+            /* Grid Responsivo Universal */
+            .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+            
+            /* Card Fluido (Não quebra o nome) */
+            .card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+            .img-box { height: 140px; text-align: center; margin-bottom: 10px; }
+            .img-box img { max-height: 100%; max-width: 100%; object-fit: contain; }
+            
+            /* O título agora cresce o quanto precisar */
+            h3 { font-size: 14px; line-height: 1.4; margin: 0 0 10px 0; color: #333; word-break: break-word; }
+            
+            /* Empurra os preços e botão para o final do card */
+            .card-footer { margin-top: auto; }
+            .price { font-size: 18px; font-weight: bold; color: var(--primary); }
+            .old-price { font-size: 12px; text-decoration: line-through; color: #888; margin-right: 5px; }
+            
+            /* Selos promocionais */
+            .badges { margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+            .badge { display: inline-block; font-size: 11px; font-weight: bold; color: white; background: #E81E26; padding: 3px 6px; border-radius: 4px; }
+            .badge-green { background: #10B981; }
+            
+            .btn-link { display: block; background: var(--primary); color: white; text-align: center; padding: 10px; border-radius: 4px; font-size: 13px; font-weight: bold; margin-top: 10px; text-decoration: none; }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h2>Ofertas Mapeadas - Menino Deus</h2>
+            <p>44 produtos em 29/04/2026 às 18:01</p>
+        </div>
+
+        <div class="controls">
+            <select id="sortSelect" onchange="aplicarFiltros()">
+                <option value="maior_desconto">Ordenar: Maior Desconto Real</option>
+                <option value="menor_preco">Ordenar: Menor Preço</option>
+            </select>
+            <select id="filterSelect" onchange="aplicarFiltros()">
+                <option value="todas">Mostrar: Todas as Ofertas</option>
+                <option value="combo">Mostrar: Apenas Ofertas Combadas 🔥</option>
+            </select>
+        </div>
+
+        <div class="grid" id="grid">
+            
+                <div class="card" data-price="4.49" data-discount="17" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-17%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/69713536-200-auto/abacate-carrefour-aprox.jpg?v=637961581787400000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Abacate Carrefour Aprox. 900 g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 5,39</span>
+                            <span class="price">R$ 4,49</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/abacate-carrefour-aprox-00-g-14950" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="7.59" data-discount="16" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-16%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/207953414-200-auto/ABACAXI-PEROLA.jpg?v=639021136012500000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Abacaxi Perola Carrefour Unidade</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 8,99</span>
+                            <span class="price">R$ 7,59</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/abacaxi-perola-carrefour-unidade-6477" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="1.49" data-discount="29" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-29%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/207953093-200-auto/Abobora_Japonesa.png?v=639021104730570000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Abóbora Japonesa Carrefour Aprox. 500g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 2,09</span>
+                            <span class="price">R$ 1,49</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/abobora-japonesa-carrefour-aprox-00g-4711675" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="31.99" data-discount="34" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-34%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/208747039-200-auto/6871968_1.jpg?v=639053899342300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Absorvente Always Noite Seca com Abas 48 Unidades</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 48,29</span>
+                            <span class="price">R$ 31,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/absorvente-always-noite-seca-com-abas-unidades-322162077" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="27.99" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/208747065-200-auto/9485970_1.jpg?v=639053899538370000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Absorvente Always Noite Ultra Suave com Abas 32 Unidades</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 37,19</span>
+                            <span class="price">R$ 27,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/absorvente-always-noite-ultra-suave-com-abas-unidades-4195" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="31.99" data-discount="38" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-38%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/208747047-200-auto/6897991_1.jpg?v=639053899398800000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Absorvente Always Noite Ultra Suave com Abas 48 Unidades</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 51,49</span>
+                            <span class="price">R$ 31,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/absorvente-always-noite-ultra-suave-com-abas-unidades-322391100" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="12.99" data-discount="19" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-19%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/185707229-200-auto/aceto-balsamico-italiano-carrefour-selection-500ml-1.jpg?v=638757446624630000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Aceto Balsâmico Italiano Carrefour Selection 500ml</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 15,99</span>
+                            <span class="price">R$ 12,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/aceto-balsamico-italiano-carrefour-selection-00ml-13109" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="25.19" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193717808-200-auto/7891000423523-Achocolatado_em_C_psula_Nescaf_Dolce_Gusto_Kopenhagen_L_ngua_de_Gato_10_c_psulas-C_psula_de_Caf_-Dolce_Gusto--1-.jpg?v=638872304295500000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Cápsula Kopenhagen Língua de Gato Nescafé Dolce Gusto Caixa 162,5g 10 Unidades</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 27,99</span>
+                            <span class="price">R$ 25,19</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-capsula-kopenhagen-lingua-de-gato-nescafe-dolce-gusto-caixa-g-0-unidades-335080055" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="11.59" data-discount="5" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-5%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/192182839-200-auto/7891000412855-Achocolatado_em_P_Nescau_Lata_350g-Achocolatado-Nescau--1-.jpg.jpg?v=638829116547570000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 350g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 12,19</span>
+                            <span class="price">R$ 11,59</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-0g-331851837" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="16.99" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193954685-200-auto/achocolatado-em-po-nescau-550g-1.jpg?v=638882009465530000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 550g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 18,89</span>
+                            <span class="price">R$ 16,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-0g-9179150" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="2.99" data-discount="23" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-23%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110552812-200-auto/card-laranja-doce.png?v=638181362081870000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Cristal Gasparin 1 Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 3,89</span>
+                            <span class="price">R$ 2,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-cristal-gasparin-kg-315455843" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="14.99" data-discount="12" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-12%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110552825-200-auto/card-laranja-doce.png?v=638181362095700000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açucar Cristal Gasparin 5Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 14,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-cristal-gasparin-kg-324899361" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.49" data-discount="17" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-17%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110671533-200-auto/acucar-cristal-uniao-1kg-1.jpg?v=638182060555300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Cristal União 1Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 4,19</span>
+                            <span class="price">R$ 3,49</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-cristal-uniao-kg-2411" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="16.99" data-discount="19" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-19%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/205951097-200-auto/172847_1.jpg?v=638977937228700000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Cristal União 5kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 20,99</span>
+                            <span class="price">R$ 16,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-cristal-uniao-kg-2404" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="9.89" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/141430275-200-auto/6649114_1.jpg?v=638488916715630000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Demerara Orgânico Carrefour Bio 1 Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 11,59</span>
+                            <span class="price">R$ 9,89</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-demerara-organico-carrefour-bio-kg-6470432" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="5.09" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110764895-200-auto/8915202_1.jpg?v=638182992627300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Demerara União Naturale 1kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 5,99</span>
+                            <span class="price">R$ 5,09</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-demerara-uniao-naturale-kg-8708" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.29" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110553160-200-auto/card-laranja-doce.png?v=638181362535200000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Extrafino Gasparini Pacote 1Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 3,89</span>
+                            <span class="price">R$ 3,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-extrafino-gasparini-pacote-kg-315455842" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="7.99" data-discount="5" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-5%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110671530-200-auto/acucar-mascavo-guimaraes-500g-1.jpg?v=638182060548600000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Mascavo Guimarães 500g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 8,39</span>
+                            <span class="price">R$ 7,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-mascavo-guimaraes-00g-14327" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.39" data-discount="21" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-21%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/110671164-200-auto/acucar-refinado-da-barra-1kg-1.jpg?v=638182056456170000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Refinado Da Barra 1Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 4,29</span>
+                            <span class="price">R$ 3,39</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-refinado-da-barra-kg-15210" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.49" data-discount="13" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-13%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/135924490-200-auto/acucar-refinado-gasparin-1kg-1.jpg?v=638386684968430000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Acucar Refinado Gasparin 1Kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 3,99</span>
+                            <span class="price">R$ 3,49</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-refinado-gasparin-kg-324899358" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.79" data-discount="24" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-24%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/205951095-200-auto/197564_1.jpg?v=638977936725700000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Açúcar Refinado União 1kg</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 4,99</span>
+                            <span class="price">R$ 3,79</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/acucar-refinado-uniao-kg-2406" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="1.89" data-discount="17" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-17%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/18904682-200-auto/agua-mineral-com-gas-crystal-500ml-1.jpg?v=637590231096200000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Mineral com Gás Crystal 500 ml</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 2,29</span>
+                            <span class="price">R$ 1,89</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-mineral-com-gas-crystal-00-ml-1032" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.29" data-discount="11" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-11%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/18904681-200-auto/agua-mineral-com-gas-crystal-15-litros-1.jpg?v=637590230893170000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Mineral Crystal Com Gás 1,5L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 3,69</span>
+                            <span class="price">R$ 3,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-mineral-crystal-com-gas-l-4091" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="7.99" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/18904690-200-auto/agua-mineral-sem-gas-crystal-5-litros-1.jpg?v=637590231146570000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Mineral sem Gás Crystal 5 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 8,89</span>
+                            <span class="price">R$ 7,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-mineral-sem-gas-crystal-l-20" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="4.99" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/129474265-200-auto/Agua-Mineral-sem-Gas-Valle-Vita-Galao-5L.png?v=638296169911630000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Mineral sem Gás Valle Vita Galão 5L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 5,89</span>
+                            <span class="price">R$ 4,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-mineral-sem-gas-valle-vita-galao-l-327094413" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="0.79" data-discount="20" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-20%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/129474527-200-auto/Agua-Mineral-sem-Gas-Valle-Vita-Garrafa-500ml.jpg?v=638296169953230000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Mineral sem Gás Valle Vita Garrafa 500ml</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 0,99</span>
+                            <span class="price">R$ 0,79</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-mineral-sem-gas-valle-vita-garrafa-00ml-327094412" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="4.79" data-discount="14" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-14%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/54428981-200-auto/agua-sanitaria-carrefour-2-litros-1.jpg?v=637889940803100000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Sanitária Carrefour 2 Litros</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 5,59</span>
+                            <span class="price">R$ 4,79</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-sanitaria-carrefour-litros-12076" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="15.89" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/203141830-200-auto/agua-sanitaria-qboa-galao-5l-1.jpg?v=638939072150970000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Sanitária Qboa Galão 5l</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 17,69</span>
+                            <span class="price">R$ 15,89</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-sanitaria-qboa-galao-l-8097" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="3.09" data-discount="11" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-11%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/192788-200-auto/155390_1.jpg?v=637272429102130000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Tônica Antarctica Diet 350ml</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 3,49</span>
+                            <span class="price">R$ 3,09</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-tonica-antarctica-diet-0ml-3970" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="699" data-discount="24" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-24%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/136921258-200-auto/air-fryer-mondial-oven-afon-12l-pt-110v-1.jpg?v=638422190098830000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Air Fryer Mondial Forno Oven AFON-12L-BI Preto e Inox 12 Litros 127V</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 919,90</span>
+                            <span class="price">R$ 699,00</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/air-fryer-mondial-forno-oven-afon-l-bi-preto-e-inox-litros-v-328460362" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="7.59" data-discount="16" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-16%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/133698005-200-auto/alcool-carrefour-tradicional-1l-1.jpg?v=638343591372970000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Álcool Carrefour Tradicional 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 8,99</span>
+                            <span class="price">R$ 7,59</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/alcool-carrefour-tradicional-l-3382" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="10.59" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/191966-200-auto/9291628_1.jpg?v=637272427077600000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Álcool Coperalcool Tradicional 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 12,49</span>
+                            <span class="price">R$ 10,59</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/alcool-coperalcool-tradicional-l-1035" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="9.29" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/13904000-200-auto/alcool-liq-bact-carrefour-trad-1l-1.jpg?v=637496031769470000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Álcool Líquido Carrefour 1 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 10,99</span>
+                            <span class="price">R$ 9,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/alcool-liquido-carrefour-l-6434462" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="5.89" data-discount="16" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-16%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/112153253-200-auto/Alcool-Liquido-Com-Bicarbonato-Zulu-1l-.jpg?v=638191626586730000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Álcool Liquido Com Bicarbonato Zulu 1l</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 6,99</span>
+                            <span class="price">R$ 5,89</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/alcool-liquido-com-bicarbonato-zulu-l-325715967" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="7.29" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/28897565-200-auto/6296882_1.jpg?v=637745956892300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Carrefour Essential Classic 2 litros</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 8,59</span>
+                            <span class="price">R$ 7,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-carrefour-essential-classic-litros-7453482" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="16.99" data-discount="42" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-42%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/207012498-200-auto/9753290_1.jpg?v=639002751455700000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Comfort Energia Floral 1 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 29,29</span>
+                            <span class="price">R$ 16,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-comfort-energia-floral-l-4329" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="16.99" data-discount="42" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-42%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/208568634-200-auto/9753311_1.jpg?v=639047970552600000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Comfort Puro Cuidado 1 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 29,29</span>
+                            <span class="price">R$ 16,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-comfort-puro-cuidado-l-1679" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="11.99" data-discount="28" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-28%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193901999-200-auto/amaciante-uau-perfumes-carinho-e-conforto-1-l-1.jpg?v=638878436788230000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado Carinho & Conforto Uau Perfumes 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,69</span>
+                            <span class="price">R$ 11,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-carinho-conforto-uau-perfumes-l-11151456" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="15.29" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/34686101-200-auto/6429335_1.jpg?v=637795720691070000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado Coco & Baunilha Girando Sol Frasco 1 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 15,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-coco-baunilha-girando-sol-frasco-l-9814231" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="15.29" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/45599519-200-auto/amaciante-de-roupa-concentrado-doces-sonhos-frasco-girando-sol-1-l-1.jpg?v=637855375917200000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado Doces Sonhos Frasco Girando Sol 1 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 15,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-doces-sonhos-frasco-girando-sol-l-7693669" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="15.29" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/45599534-200-auto/amaciante-de-roupa-concentrado-hipoalergenico-frasco-girando-sol-1-l-1.jpg?v=637855376517330000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado Hipoalergênico Frasco Girando Sol 1 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 15,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-hipoalergenico-frasco-girando-sol-l-9814229" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="11.99" data-discount="28" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-28%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193901998-200-auto/amaciante-uau-perfumes-rosas-e-seducao-1-l-1.jpg?v=638878436787100000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado Rosas & Sedução Uau Perfumes 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,69</span>
+                            <span class="price">R$ 11,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-rosas-seducao-uau-perfumes-l-11151453" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="15.29" data-discount="10" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-10%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/109339813-200-auto/Amaciante-de-Roupas-Concentrado-Girando-Sol-Paixao-Secreta-1L.jpg?v=638167443499430000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupas Concentrado Girando Sol Paixão Secreta 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 15,29</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupas-concentrado-girando-sol-paixao-secreta-l-324919531" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="31.79" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/205957323-200-auto/7506339332650_1.jpg?v=638978039462270000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Downy Concentrado Brisa de Verão 1,5 L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 37,39</span>
+                            <span class="price">R$ 31,79</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-downy-concentrado-brisa-de-verao-l-8100772" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+        </div>
+
+        <script>
+            function aplicarFiltros() {
+                const sortVal = document.getElementById('sortSelect').value;
+                const filterVal = document.getElementById('filterSelect').value;
+                const grid = document.getElementById('grid');
+                const cards = Array.from(grid.getElementsByClassName('card'));
+
+                // Lógica de Ordenação
+                cards.sort((a, b) => {
+                    if (sortVal === 'maior_desconto') {
+                        return parseFloat(b.dataset.discount) - parseFloat(a.dataset.discount);
+                    } else if (sortVal === 'menor_preco') {
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    }
+                });
+
+                // Lógica de Filtragem e Re-inserção no Grid
+                cards.forEach(card => {
+                    const isCombo = card.dataset.combo === 'true';
+                    
+                    if (filterVal === 'combo' && !isCombo) {
+                        card.style.display = 'none';
+                    } else {
+                        card.style.display = 'flex';
+                    }
+                    grid.appendChild(card);
+                });
+            }
+            
+            // Executa a primeira ordenação ao abrir o arquivo
+            aplicarFiltros();
+        </script>
+    </body>
+    </html>

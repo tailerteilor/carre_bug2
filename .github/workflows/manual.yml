@@ -1,0 +1,59 @@
+name: Rodar Scraper Manualmente
+
+on:
+  schedule:
+    - cron: '30 16 * * *' # Isso roda todo dia às 13:30 (Brasil / UTC-3)
+  workflow_dispatch:      # Isso mantém o botão manual ativo
+
+permissions:
+  contents: write
+  
+jobs:
+  executar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixando os arquivos
+        uses: actions/checkout@v4
+
+      - name: Preparando o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalando as Dependências (Sem download de Chrome redundante)
+        run: npm install
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Organizar Backups (Mover antigos)
+        run: |
+          mkdir -p backup
+          mv Carrefour_*.html backup/ 2>/dev/null || true
+          echo "Arquivos antigos movidos para /backup"
+
+      - name: Rodando o Robô
+        run: node index_nuvem.js
+
+      - name: Salvando no GitHub (Relatório + Backup)
+        run: |
+          git config --local user.email "bot@github.com"
+          git config --local user.name "Bot do Sr. Carvalho"
+          git add .
+          git commit -m "Relatório atualizado e backups organizados" || echo "Sem alterações"
+          git push
+
+      - name: Pegar nome do arquivo HTML gerado
+        id: file_name
+        run: |
+          FILE=$(ls Carrefour_*.html | head -n 1)
+          echo "HTML_FILE=$FILE" >> $GITHUB_ENV
+
+      - name: Enviar para o Telegram
+        if: success()
+        uses: appleboy/telegram-action@master
+        with:
+          to: "730087141,-1003976059098"
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: ${{ env.HTML_FILE }}
+          message: "🔥 Relatório de Ofertas atualizado! Acesse o arquivo HTML acima para ver os descontos."
