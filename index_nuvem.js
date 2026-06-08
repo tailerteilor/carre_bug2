@@ -5,7 +5,7 @@ const fs = require('fs');
 // CONFIGURAÇÕES
 // ==========================================
 const TARGET_CEP = '90160-181'; 
-const MAX_PAGES = 49; 
+const MAX_PAGES = 6; // Limitado a 6 páginas conforme orientado pelo usuário
 const WAIT_AFTER_SCROLL = 2000;
 
 // Varredura dupla para burlar limites
@@ -253,6 +253,97 @@ const SORTS = ['name_asc', 'name_desc'];
     }
 
     // ==========================================
+    // 2.5 VERIFICAÇÃO DE PREÇO NO CARRINHO
+    // ==========================================
+    console.log('\n======================================================');
+    console.log('INICIANDO VERIFICAÇÃO DE PREÇOS OCULTOS NO CARRINHO');
+    console.log('======================================================');
+
+    console.log(`Verificando carrinho para ${allProducts.length} produtos... (pode demorar alguns minutos)`);
+
+    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+
+    const cartResults = await page.evaluate(async (products) => {
+        const results = {};
+        
+        for (let p of products) {
+            try {
+                await fetch('https://mercado.carrefour.com.br/action/add-product.data', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                        'Origin': 'https://mercado.carrefour.com.br'
+                    },
+                    body: `sku=${p.id}&sellerId=1&quantity=1&index=0`
+                });
+
+                await new Promise(r => setTimeout(r, 500));
+
+                const resUpdate = await fetch('https://mercado.carrefour.com.br/action/update-items.data', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                        'Origin': 'https://mercado.carrefour.com.br'
+                    },
+                    body: `sku=${p.id}&sellerId=1&quantity=4&index=0`
+                });
+
+                const textResponse = await resUpdate.text();
+                
+                try {
+                    // Tentar parse simplificado via RegEx para capturar price do VTEX IO (flat array)
+                    // Geralmente vem como "sellingPrice", 1061 ou "price", 1061
+                    const match = textResponse.match(/"price",(\d+)/) || textResponse.match(/"sellingPrice",(\d+)/);
+                    if (match && match[1]) {
+                        results[p.id] = parseInt(match[1]) / 100;
+                    }
+                } catch(e) {}
+
+                await fetch('https://mercado.carrefour.com.br/action/update-items.data', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': '*/*',
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                        'Origin': 'https://mercado.carrefour.com.br'
+                    },
+                    body: `sku=${p.id}&sellerId=1&quantity=0&index=0`
+                });
+
+            } catch(e) {
+                console.error(`Erro ao checar carrinho para SKU ${p.id}`, e);
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        }
+        return results;
+    }, allProducts);
+
+    let encontradosNoCarrinho = 0;
+    for (let p of allProducts) {
+        if (cartResults[p.id]) {
+            const cartPrice = cartResults[p.id];
+            if (cartPrice > 0 && cartPrice < p.priceValue) {
+                console.log(`[PROMO OCULTA] ${p.name} - De R$ ${p.priceValue} por R$ ${cartPrice} no carrinho!`);
+                if (p.oldPriceValue === 0 || p.oldPriceValue <= cartPrice) {
+                    p.oldPriceValue = p.priceValue;
+                }
+                p.priceValue = cartPrice;
+                p.price = `R$ ${cartPrice.toFixed(2).replace('.', ',')}`;
+                p.badgeCarrinho = true;
+                
+                const priceDropDiscount = (p.oldPriceValue - p.priceValue) / p.oldPriceValue;
+                p.effectiveDiscount = Math.round(priceDropDiscount * 100);
+                
+                encontradosNoCarrinho++;
+            } else {
+                console.log(`[S/PROMO OCULTA] ${p.name} - Preço manteve R$ ${cartPrice}`);
+            }
+        }
+    }
+    console.log(`Promoções ocultas encontradas no carrinho: ${encontradosNoCarrinho}`);
+
+    // ==========================================
     // 3. GERAÇÃO DO NOME DO ARQUIVO
     // ==========================================
     console.log('\nGerando relatório dinâmico interativo...');
@@ -303,6 +394,7 @@ const SORTS = ['name_asc', 'name_desc'];
             .badges { margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
             .badge { display: inline-block; font-size: 11px; font-weight: bold; color: white; background: #E81E26; padding: 3px 6px; border-radius: 4px; }
             .badge-green { background: #10B981; }
+            .badge-carrinho { background: #F59E0B; }
             
             .btn-link { display: block; background: var(--primary); color: white; text-align: center; padding: 10px; border-radius: 4px; font-size: 13px; font-weight: bold; margin-top: 10px; text-decoration: none; }
         </style>
@@ -331,6 +423,7 @@ const SORTS = ['name_asc', 'name_desc'];
                         ${p.effectiveDiscount > 0 ? `<span class="badge badge-green">-${p.effectiveDiscount}%</span>` : ''}
                         ${p.promotionType === 'leve_pague' ? '<span class="badge">Leve+ Pague-</span>' : ''}
                         ${p.promotionType === 'combo' ? '<span class="badge">COMBO</span>' : ''}
+                        ${p.badgeCarrinho ? '<span class="badge badge-carrinho">🛒 No Carrinho</span>' : ''}
                     </div>
                     <div class="img-box"><img src="${p.image}" loading="lazy"></div>
                     <h3>${p.name}</h3>
