@@ -263,9 +263,26 @@ const SORTS = ['name_asc', 'name_desc'];
 
     page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-    const cartResults = await page.evaluate(async (products) => {
+    const cartResults = await page.evaluate(async (params) => {
+        const { products, cep } = params;
         const results = {};
         
+        // 0. Garante que a regionalização está ativa antes de adicionar ao carrinho
+        try {
+            await fetch('https://mercado.carrefour.com.br/action/set-regionalization.data', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                    'Origin': 'https://mercado.carrefour.com.br'
+                },
+                body: `page-view-id=42ab34a6-4420-460f-89c6-37c4777d3c1c&source=cep-component&CEP=${cep}`
+            });
+            await new Promise(r => setTimeout(r, 1000));
+        } catch(e) {
+            console.error('Erro ao re-injetar CEP:', e);
+        }
+
         for (let p of products) {
             try {
                 await fetch('https://mercado.carrefour.com.br/action/add-product.data', {
@@ -287,7 +304,7 @@ const SORTS = ['name_asc', 'name_desc'];
                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
                         'Origin': 'https://mercado.carrefour.com.br'
                     },
-                    body: `sku=${p.id}&sellerId=1&quantity=4&index=0`
+                    body: `sku=${p.id}&sellerId=1&quantity=6&index=0`
                 });
 
                 const textResponse = await resUpdate.text();
@@ -317,7 +334,7 @@ const SORTS = ['name_asc', 'name_desc'];
             await new Promise(r => setTimeout(r, 1000));
         }
         return results;
-    }, allProducts);
+    }, { products: allProducts, cep: TARGET_CEP });
 
     let encontradosNoCarrinho = 0;
     for (let p of allProducts) {
