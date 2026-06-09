@@ -5,7 +5,7 @@ const fs = require('fs');
 // CONFIGURAÇÕES
 // ==========================================
 const TARGET_CEP = '90160-181'; 
-const MAX_PAGES = 2; // Limitado a 2 para teste rápido
+const MAX_PAGES = 49; // Varredura completa para produção
 const WAIT_AFTER_SCROLL = 2000;
 
 // Varredura dupla para burlar limites
