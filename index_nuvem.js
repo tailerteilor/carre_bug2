@@ -83,7 +83,8 @@ const SORTS = ['name_asc', 'name_desc'];
     let allProducts = [];
     let scrapedUrls = new Set();
 
-    for (let sortType of SORTS) {
+    try {
+        for (let sortType of SORTS) {
         console.log(`\n======================================================`);
         console.log(`INICIANDO BUSCA COM ORDENAÇÃO: ${sortType.toUpperCase()}`);
         console.log(`======================================================`);
@@ -360,10 +361,14 @@ const SORTS = ['name_asc', 'name_desc'];
     }
     console.log(`Promoções ocultas encontradas no carrinho: ${encontradosNoCarrinho}`);
 
-    // ==========================================
-    // 3. GERAÇÃO DO NOME DO ARQUIVO
-    // ==========================================
-    console.log('\nGerando relatório dinâmico interativo...');
+    } catch (fatalError) {
+        console.error('\n🚨 UM ERRO INESPERADO OCORREU DURANTE A RASPAGEM OU VERIFICAÇÃO DE CARRINHO:', fatalError);
+        console.log('⚠️ Interrompendo processo, mas salvando os dados coletados até o momento da falha...');
+    } finally {
+        // ==========================================
+        // 3. GERAÇÃO DO NOME DO ARQUIVO E RELATÓRIOS
+        // ==========================================
+        console.log('\nGerando relatório dinâmico interativo...');
     
     const now = new Date();
     const pad = (n) => String(n).padStart(2, '0');
@@ -496,5 +501,8 @@ const SORTS = ['name_asc', 'name_desc'];
     console.log('✅ Tudo Pronto!');
     console.log(`Arquivo gerado: ${filenameHtml}`);
 
-    await browser.close();
+        if (browser) {
+            await browser.close();
+        }
+    }
 })();
