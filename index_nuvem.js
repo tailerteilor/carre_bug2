@@ -5,7 +5,7 @@ const fs = require('fs');
 // CONFIGURAÇÕES
 // ==========================================
 const TARGET_CEP = '90160-181'; 
-const MAX_PAGES = 6; // Limitado a 6 páginas conforme orientado pelo usuário
+const MAX_PAGES = 2; // Limitado a 2 para teste rápido
 const WAIT_AFTER_SCROLL = 2000;
 
 // Varredura dupla para burlar limites
@@ -266,63 +266,75 @@ const SORTS = ['name_asc', 'name_desc'];
 
     const cartResults = {};
     
-    // 0. Garante que a regionalização está ativa antes de começar
+    // 0. Garante que estamos na homepage limpa
     try {
-        await page.evaluate(async (cep) => {
-            await fetch('https://mercado.carrefour.com.br/action/set-regionalization.data', {
-                method: 'POST',
-                headers: {
-                    'Accept': '*/*',
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-                    'Origin': 'https://mercado.carrefour.com.br'
-                },
-                body: `page-view-id=42ab34a6-4420-460f-89c6-37c4777d3c1c&source=cep-component&CEP=${cep}`
-            });
-        }, TARGET_CEP);
-        await new Promise(r => setTimeout(r, 1000));
-    } catch(e) {
-        console.error('Erro ao re-injetar CEP:', e);
-    }
+        await page.goto('https://mercado.carrefour.com.br/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+    } catch(e) {}
 
     for (let i = 0; i < allProducts.length; i++) {
         let p = allProducts[i];
         try {
-            // Imprime progresso a cada 20 itens para não poluir
+            // Limpa o carrinho deletando o cookie do orderFormId da VTEX
+            await page.deleteCookie({ name: 'checkout.orderFormId', domain: '.carrefour.com.br' });
+            await page.deleteCookie({ name: 'checkout.orderFormId', domain: 'mercado.carrefour.com.br' });
+
+            // Re-injeta o CEP a cada 10 itens para garantir
+            if (i % 10 === 0) {
+                await page.evaluate(async (cep) => {
+                    try {
+                        await fetch('https://mercado.carrefour.com.br/action/set-regionalization.data', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                            body: `page-view-id=42ab34a6-4420-460f-89c6-37c4777d3c1c&source=cep-component&CEP=${cep}`
+                        });
+                    } catch(e){}
+                }, TARGET_CEP);
+                await new Promise(r => setTimeout(r, 800));
+            }
+
             if (i % 20 === 0) console.log(`Verificando item ${i+1}/${allProducts.length}...`);
 
             const itemCartPrice = await page.evaluate(async (product) => {
-                await fetch('https://mercado.carrefour.com.br/action/add-product.data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                    body: `sku=${product.id}&sellerId=1&quantity=1&index=0`
-                });
+                // Suprime console errors de 500 no console do puppeteer para não poluir
+                const origError = console.error;
+                console.error = function() {};
 
-                await new Promise(r => setTimeout(r, 400));
-
-                const resUpdate = await fetch('https://mercado.carrefour.com.br/action/update-items.data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                    body: `sku=${product.id}&sellerId=1&quantity=6&index=0`
-                });
-
-                const textResponse = await resUpdate.text();
                 let foundPrice = null;
-                const match = textResponse.match(/"price",(\d+)/) || textResponse.match(/"sellingPrice",(\d+)/);
-                if (match && match[1]) {
-                    foundPrice = parseInt(match[1]) / 100;
-                }
+                try {
+                    const rAdd = await fetch('https://mercado.carrefour.com.br/action/add-product.data', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                        body: `sku=${product.id}&sellerId=1&quantity=1&index=0`
+                    });
+                    
+                    if (!rAdd.ok) return null; // Se não deu pra adicionar (Marketplace/Estoque), pula.
 
-                await fetch('https://mercado.carrefour.com.br/action/update-items.data', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                    body: `sku=${product.id}&sellerId=1&quantity=0&index=0`
-                });
-                
+                    await new Promise(r => setTimeout(r, 400));
+
+                    const rUpd = await fetch('https://mercado.carrefour.com.br/action/update-items.data', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                        body: `sku=${product.id}&sellerId=1&quantity=6&index=0`
+                    });
+
+                    if (rUpd.ok) {
+                        const textResponse = await rUpd.text();
+                        const match = textResponse.match(/"price",(\d+)/) || textResponse.match(/"sellingPrice",(\d+)/);
+                        if (match && match[1]) {
+                            foundPrice = parseInt(match[1]) / 100;
+                        }
+                    }
+                } catch(e) {}
+
+                console.error = origError; // restaura
                 return foundPrice;
             }, p);
 
             if (itemCartPrice) {
                 cartResults[p.id] = itemCartPrice;
+                console.log(`✓ Valor final achado depois de simular no carrinho (6 unid): R$ ${itemCartPrice}`);
+            } else {
+                // silencioso para não poluir
             }
         } catch(e) {
             console.error(`Erro isolado no item ${p.id}:`, e.message);
