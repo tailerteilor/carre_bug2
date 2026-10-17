@@ -1,0 +1,528 @@
+
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ofertas Carrefour</title>
+        <style>
+            :root { --primary: #003087; --bg: #f3f4f6; }
+            body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+            .header { background: var(--primary); color: white; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 20px; }
+            
+            /* Controles de Filtro */
+            .controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+            .controls select { padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; flex: 1; min-width: 200px; max-width: 300px; outline: none; background: white; cursor: pointer; }
+            
+            /* Grid Responsivo Universal */
+            .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+            
+            /* Card Fluido (Não quebra o nome) */
+            .card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+            .img-box { height: 140px; text-align: center; margin-bottom: 10px; }
+            .img-box img { max-height: 100%; max-width: 100%; object-fit: contain; }
+            
+            /* O título agora cresce o quanto precisar */
+            h3 { font-size: 14px; line-height: 1.4; margin: 0 0 10px 0; color: #333; word-break: break-word; }
+            
+            /* Empurra os preços e botão para o final do card */
+            .card-footer { margin-top: auto; }
+            .price { font-size: 18px; font-weight: bold; color: var(--primary); }
+            .old-price { font-size: 12px; text-decoration: line-through; color: #888; margin-right: 5px; }
+            
+            /* Selos promocionais */
+            .badges { margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+            .badge { display: inline-block; font-size: 11px; font-weight: bold; color: white; background: #E81E26; padding: 3px 6px; border-radius: 4px; }
+            .badge-green { background: #10B981; }
+            .badge-carrinho { background: #F59E0B; }
+            
+            .btn-link { display: block; background: var(--primary); color: white; text-align: center; padding: 10px; border-radius: 4px; font-size: 13px; font-weight: bold; margin-top: 10px; text-decoration: none; }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h2>Ofertas Mapeadas - Menino Deus</h2>
+            <p>24 produtos em 17/10/2026 às 18:43</p>
+        </div>
+
+        <div class="controls">
+            <select id="sortSelect" onchange="aplicarFiltros()">
+                <option value="maior_desconto">Ordenar: Maior Desconto Real</option>
+                <option value="menor_preco">Ordenar: Menor Preço</option>
+            </select>
+            <select id="filterSelect" onchange="aplicarFiltros()">
+                <option value="todas">Mostrar: Todas as Ofertas</option>
+                <option value="combo">Mostrar: Apenas Ofertas Combadas 🔥</option>
+            </select>
+        </div>
+
+        <div class="grid" id="grid">
+            
+                <div class="card" data-price="27.9" data-discount="50" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-50%</span>
+                        <span class="badge">Leve+ Pague-</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193717808-200-auto/7891000423523-Achocolatado_em_C_psula_Nescaf_Dolce_Gusto_Kopenhagen_L_ngua_de_Gato_10_c_psulas-C_psula_de_Caf_-Dolce_Gusto--1-.jpg?v=638872304295500000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Cápsula Kopenhagen Língua de Gato Nescafé Dolce Gusto Caixa 162,5g 10 Unidades</h3>
+                    <div class="card-footer">
+                        <div>
+                            
+                            <span class="price">R$ 27,90</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-capsula-kopenhagen-lingua-de-gato-nescafe-dolce-gusto-caixa-1625g-10-unidades-335080055" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="27.9" data-discount="50" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-50%</span>
+                        <span class="badge">Leve+ Pague-</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/178724607-200-auto/achocolatado-em-capsula-nescafe-dolce-gusto-sabor-nescau-10-capsulas-1.jpg?v=638669319858300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Cápsula Nescafé Dolce Gusto Sabor Nescau 10 Cápsulas</h3>
+                    <div class="card-footer">
+                        <div>
+                            
+                            <span class="price">R$ 27,90</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-capsula-nescafe-dolce-gusto-sabor-nescau-10-capsulas-15855" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="11.61" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/194126149-200-auto/3613682_1.jpg?v=638890710915000000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Instantâneo Nescau Leve 550g Pague 500g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,58</span>
+                            <span class="price">R$ 11,61</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-instantaneo-nescau-leve-550g-pague-500g-335178040" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="6.87" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193950824-200-auto/achocolatado-em-po-nescau-200g-1.jpg?v=638881820632830000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 200g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 9,81</span>
+                            <span class="price">R$ 6,87</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-200g-328829516" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="13.61" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/178731782-200-auto/achocolatado-em-po-nescau-30--180g-1.jpg?v=638669422192300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 30% 180g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 19,45</span>
+                            <span class="price">R$ 13,61</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-30-180g-324707106" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="9.61" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/192182839-200-auto/7891000412855-Achocolatado_em_P_Nescau_Lata_350g-Achocolatado-Nescau--1-.jpg.jpg?v=638829116547570000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 350g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 13,73</span>
+                            <span class="price">R$ 9,61</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-350g-331851837" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="12.82" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193954685-200-auto/achocolatado-em-po-nescau-550g-1.jpg?v=638882009465530000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 550g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 18,31</span>
+                            <span class="price">R$ 12,82</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-550g-9179150" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="13.63" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/178731781-200-auto/achocolatado-em-po-nescau-60--180g-1.jpg?v=638669422192300000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau 60% 180g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 19,47</span>
+                            <span class="price">R$ 13,63</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-60-180g-324707107" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="11.45" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/192182539-200-auto/7891000390030-Achocolatado_em_P_NESCAU_Cil_ndrico_33_menos_a_cares_350g-Achocolatado-Nescau--1-.jpg.jpg?v=638829112896930000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau Cilíndrico 33% menos açúcares 350g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,35</span>
+                            <span class="price">R$ 11,45</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-cilindrico-33-menos-acucares-350g-328831094" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="15.8" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/193950787-200-auto/achocolatado-em-po-nescau-cilindro-670g-1.jpg?v=638881820517170000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau Cilindro 670g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 22,57</span>
+                            <span class="price">R$ 15,80</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-cilindro-670g-327295482" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="27.37" data-discount="30" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-30%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/212946716-200-auto/7891000441312%20-1-.jpg?v=639064166010200000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado em Pó Nescau Protein 330G</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 39,10</span>
+                            <span class="price">R$ 27,37</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nescau-protein-330g-339631510" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="13.04" data-discount="20" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-20%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/206426943-200-auto/achocolatado-em-po-nesquik-morango-380g-1.jpg?v=638981179241330000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Achocolatado Em Pó Nesquik Morango 380g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,30</span>
+                            <span class="price">R$ 13,04</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/achocolatado-em-po-nesquik-morango-380g-5443" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="8.99" data-discount="37" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-37%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/109358246-200-auto/Agua-de-Coco-Integral-Dikoko-Caixa-1L.jpg?v=638167563220730000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água de Coco Integral Dikoko Caixa 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 14,19</span>
+                            <span class="price">R$ 8,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-de-coco-integral-dikoko-caixa-1l-324919527" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="2.99" data-discount="72" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-72%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/108121201-200-auto/Agua-Oxigenada-30-Volumes-Lightner-100ml.jpg?v=638158029892930000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Água Oxigenada 30 Volumes Lightner 100ml</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 10,69</span>
+                            <span class="price">R$ 2,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/agua-oxigenada-30-volumes-lightner-100ml-7781519" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="28.47" data-discount="15" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-15%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/216783133-200-auto/9135103_1.jpg?v=639240382075830000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Almôndega Seara 500g</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 33,49</span>
+                            <span class="price">R$ 28,47</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/almondega-seara-500g-9543" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="9.99" data-discount="44" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-44%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/213574275-200-auto/4304853.jpg?v=639100561519470000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Coala Sol do Brasil 1l</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 17,69</span>
+                            <span class="price">R$ 9,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-coala-sol-do-brasil-1l-339807062" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="9.99" data-discount="44" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-44%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/213574276-200-auto/4301129.jpg?v=639100562983630000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Coala The Queen 1l</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 17,69</span>
+                            <span class="price">R$ 9,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-coala-the-queen-1l-339807065" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="12.74" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/215412217-200-auto/7896098901496--1-.jpg?v=639178386785270000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Ypê Frescor das Flores 1L</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 12,74</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-ype-frescor-das-flores-1l-18187" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="14.02" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/215412537-200-auto/7896098903018--1-.jpg?v=639178395569600000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Ypê Frescor das Flores 900ml Refil Econômico</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 18,69</span>
+                            <span class="price">R$ 14,02</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-ype-frescor-das-flores-900ml-refil-economico-327359770" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="12.74" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/192738488-200-auto/3909964.png?v=638845569500830000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Ypê L'Occitane au Brésil Ninfa das Águas 1 Litro</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 12,74</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-ype-loccitane-au-bresil-ninfa-das-aguas-1-litro-334847284" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="14.02" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/215412542-200-auto/7896098903025--1-.jpg?v=639178395827700000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante Concentrado Ypê Romance da Primavera Refil 900ml</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 18,69</span>
+                            <span class="price">R$ 14,02</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-concentrado-ype-romance-da-primavera-refil-900ml-327359776" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="17.62" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/173450336-200-auto/amac-conc-ype-azul-conc-1-5l-gts-250ml-1.jpg?v=638626978774230000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado Blue Garden Ypê Frasco Leve 1,5l Pague 1,25l</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 23,49</span>
+                            <span class="price">R$ 17,62</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-blue-garden-ype-frasco-leve-15l-pague-125l-331670761" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="12.74" data-discount="25" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-25%</span>
+                        
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/192734290-200-auto/3909972.png?v=638845527925800000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Amaciante de Roupa Concentrado L'Occitane au Brésil Ypê 1l</h3>
+                    <div class="card-footer">
+                        <div>
+                            <span class="old-price">R$ 16,99</span>
+                            <span class="price">R$ 12,74</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/amaciante-de-roupa-concentrado-loccitane-au-bresil-ype-1l-334847285" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+                <div class="card" data-price="6.99" data-discount="40" data-combo="false">
+                    <div class="badges">
+                        <span class="badge badge-green">-40%</span>
+                        <span class="badge">Leve+ Pague-</span>
+                        
+                        
+                    </div>
+                    <div class="img-box"><img src="https://carrefourbrfood.vtexassets.com/arquivos/ids/186738901-200-auto/3520331_1.jpg.jpg?v=638773106777930000&quality=5&width=200&height=200" loading="lazy"></div>
+                    <h3>Wafer Cobertura Chocolate Branco Lacta Bis Xtra 45g</h3>
+                    <div class="card-footer">
+                        <div>
+                            
+                            <span class="price">R$ 6,99</span>
+                        </div>
+                        <a href="https://mercado.carrefour.com.br/produto/wafer-cobertura-chocolate-branco-lacta-bis-xtra-45g-332589436" class="btn-link" target="_blank">VER NO SITE</a>
+                    </div>
+                </div>
+            
+        </div>
+
+        <script>
+            function aplicarFiltros() {
+                const sortVal = document.getElementById('sortSelect').value;
+                const filterVal = document.getElementById('filterSelect').value;
+                const grid = document.getElementById('grid');
+                const cards = Array.from(grid.getElementsByClassName('card'));
+
+                // Lógica de Ordenação
+                cards.sort((a, b) => {
+                    if (sortVal === 'maior_desconto') {
+                        return parseFloat(b.dataset.discount) - parseFloat(a.dataset.discount);
+                    } else if (sortVal === 'menor_preco') {
+                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    }
+                });
+
+                // Lógica de Filtragem e Re-inserção no Grid
+                cards.forEach(card => {
+                    const isCombo = card.dataset.combo === 'true';
+                    
+                    if (filterVal === 'combo' && !isCombo) {
+                        card.style.display = 'none';
+                    } else {
+                        card.style.display = 'flex';
+                    }
+                    grid.appendChild(card);
+                });
+            }
+            
+            // Executa a primeira ordenação ao abrir o arquivo
+            aplicarFiltros();
+        </script>
+    </body>
+    </html>
